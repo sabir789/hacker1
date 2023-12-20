@@ -72,7 +72,7 @@ run_katana() {
 # Function to run waymore on the main domain or single target
 run_waymore_on_domain() {
     local domain="$1"
-    python3 "$work_dir/waymore/waymore.py" -i "$domain" -mode U
+    python3 "/sec/root/waymore/waymore.py" -i "$domain" -mode U
 }
 
 # Function to combine katana and waymore results
@@ -100,7 +100,7 @@ run_httpx_on_combined_results() {
 run_nuclei_on_live_endpoints() {
     local input_file="$1"
     local output_file="$2"
-    nuclei -t "$work_dir/fuzzing-templates" -l "$input_file" -o "$output_file"
+    nuclei -t "/sec/root/fuzzing-templates" -l "$input_file" -o "$output_file"
 }
 
 # Function to run redirector.py on live filtered endpoints
@@ -145,7 +145,7 @@ run_scan() {
     run_katana "$subdomains_file" "$domain" "$katana_output_file"
 
     # Run waymore on the main domain
-    waymore_output_file="$output_dir/waymore.txt"
+    waymore_output_file="/sec/root/waymore/results/$domain/waymore.txt"
     run_waymore_on_domain "$domain"
 
     # Combine the results of katana and waymore
@@ -226,7 +226,7 @@ if [ -z "$input_type" ]; then
 fi
 
 # If no output directory is specified, use the default
-output_dir="${output_dir:-$work_dir/waymore/results}"
+output_dir="${output_dir:-$work_dir}"
 
 # Run the scan
 run_scan "$input_type" "$domain" "$domain_list" "$urls_file" "$header" "$output_dir" "$threads"
